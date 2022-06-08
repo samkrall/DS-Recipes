@@ -1,0 +1,51 @@
+'''
+This contains analysis via descriptive statistics and visualization
+'''
+
+
+#peek at the top/bottom of data, specify # of lines
+df.head()
+df.tail()
+
+
+#get total rows/columns
+df.shape
+
+
+#show columns, count and datatype
+df.info()
+
+
+#show columns
+df.columns
+
+
+#show columns/datatypes
+df.dtypes
+
+
+#show descriptive statistics (count, mean, std, min, 25/50/75, max) for all columns that are floats/ints
+df.describe()
+
+
+#gives count of null values for all columns
+df.isnull().sum()
+
+
+#for categoricals, gives # of each value present in specified column
+df['column'].value_counts()
+
+
+#for categoricals, gives # of each value present in specified column
+df.groupby('column').size()
+
+
+#shows correlations between columns
+df.corr(method='pearson')
+
+
+#shows skew of data
+df.skew()
+
+#Visualization
+

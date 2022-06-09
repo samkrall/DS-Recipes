@@ -49,3 +49,27 @@ df.skew()
 
 #Visualization
 
+#histogram overview 
+train_data.hist() 
+
+
+#hist individual 
+Df['column'].plot.hist() 
+
+ 
+#density plot overview 
+train_data.plot(kind='density', subplots=True, layout=(3,3), sharex=False) 
+
+ 
+#box/whisker plot overview 
+train_data.plot(kind='box', subplots=True, layout=(3,3), sharex=False, sharey=False) 
+
+ 
+#scater matrix 
+pd.plotting.scatter_matrix(train_data) 
+
+
+#seaborn... 
+Sns.countplot(x='column', hue= 'other column', data=df)  
+
+Sns.heatmap(data) 

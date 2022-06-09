@@ -50,7 +50,7 @@ df.skew()
 #Visualization
 
 #histogram overview 
-train_data.hist() 
+train_data.hist(figsize = (20, 10)) 
 
 
 #hist individual 
@@ -58,7 +58,7 @@ Df['column'].plot.hist()
 
  
 #density plot overview 
-train_data.plot(kind='density', subplots=True, layout=(3,3), sharex=False) 
+df.plot(kind='density', figsize = (20, 10), subplots=True, layout=(3,3), sharex=False)
 
  
 #box/whisker plot overview 
@@ -66,7 +66,7 @@ train_data.plot(kind='box', subplots=True, layout=(3,3), sharex=False, sharey=Fa
 
  
 #scater matrix 
-pd.plotting.scatter_matrix(train_data) 
+pd.plotting.scatter_matrix(train_data, figsize = (20, 10)) 
 
 
 #seaborn... 

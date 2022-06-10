@@ -1,0 +1,15 @@
+#replace '0' with NAN
+df_copy = df.copy(deep = True)
+df_copy[['column1', 'column2', 'column_n']] = df_copy[['column1', 'column2', 'column_n']].replace(0, np.NaN)
+df_copy.isnull().sum()
+
+#drop irrelevant column 
+df_train.drop('Cabin',axis=1,inplace=True) 
+
+#fill null value with composite value 
+df_train["column"].fillna(df_train['column'].median(),inplace=True)  (or mean or mode or …) 
+
+#Recoding Values: 
+df['column'] = pd.Categorical(df['column']).codes 
+Using lambda 
+Pd.get_dummies 

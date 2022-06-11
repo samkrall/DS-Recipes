@@ -10,6 +10,19 @@ df_train.drop('Cabin',axis=1,inplace=True)
 df_train["column"].fillna(df_train['column'].median(),inplace=True)  (or mean or mode or …) 
 
 #Recoding Values: 
-df['column'] = pd.Categorical(df['column']).codes 
-Using lambda 
+
+#using.codes
+df['column'] = pd.Categorical(df['column']).codes
+
+#using .loc
+df.loc[df['column'] <20, 'column_indicator'] = 0
+df.loc[df['column'] <30) & (df['column']>20), 'column_indicator] = 1
+df.loc[df['column'] >30, 'column_indicator'] = 2
+
+#using replace
+df['Sex'].replace(['male','female'],[0,1],inplace=True)
+
+#Using lambda 
+
+
 Pd.get_dummies 

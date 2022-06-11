@@ -25,4 +25,5 @@ df['Sex'].replace(['male','female'],[0,1],inplace=True)
 #Using lambda 
 
 
-Pd.get_dummies 
+#get dummies (logistic regression)
+pd.get_dummies(df['column'], drop_first=True)

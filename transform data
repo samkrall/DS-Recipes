@@ -1,0 +1,14 @@
+#rescale data (0 to 1)
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler(feature_range=(0, 1))
+rescaledX = scaler.fit_transform(X)
+
+#standardize data (0 mean, 1stddev)
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler().fit(X)
+rescaledX = scaler.transform(X)
+
+#normalize data
+from sklearn.preprocessing import Normalizer
+scaler = Normalizer().fit(X)
+normalizedX = scaler.transform(X)

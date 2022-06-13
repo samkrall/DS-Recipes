@@ -2,12 +2,52 @@
 from sklearn.model_selection import train_test_split 
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.25,random_state=1) 
 
+#classification algorithms
+
 #logistic regression
 from sklearn.linear_model import  LogisticRegression 
 logreg = LogisticRegression() 
 logreg.fit(X, y) 
 logreg.predict(X)
 logreg.score(X, y)
+
+#decision tree classifier
+from sklearn.tree import DecisionTreeClassifier
+dtc = DecisionTreeClassifier(random_state = 1)
+dtc.fit(X_train, y_train)
+dtc_train_score = dtc.score(X_train, y_train)
+dtc_test_score = dtc.score(X_test, y_test)
+print(dtc_train_score)
+print(dtc_test_score)
+
+#random forest classifier
+from sklearn.ensemble import RandomForestClassifier
+rfc = RandomForestClassifier(random_state = 1)
+rfc.fit(X_train, y_train)
+rfc_train_score = rfc.score(X_train, y_train)
+rfc_test_score = rfc.score(X_test, y_test)
+print(rfc_train_score)
+print(rfc_test_score)
+
+#gradient boosting classifier
+from sklearn.ensemble import GradientBoostingClassifier
+gb = GradientBoostingClassifier()
+gb.fit(X_train, y_train)
+gb_train_score = gb.score(X_train, y_train)
+gb_test_score = gb.score(X_test, y_test)
+print(gb_train_score)
+print(gb_test_score)
+
+#XG Boost Classifier
+from xgboost import XGBClassifier
+xgb = XGBClassifier()
+xgb.fit(X_train, y_train)
+xgb_train_score = xgb.score(X_train, y_train)
+xgb_test_score = xgb.score(X_test, y_test)
+print(xgb_train_score)
+print(xgb_test_score)
+
+#Regression
 
 #decision tree regressor
 from sklearn.tree import DecisionTreeRegressor

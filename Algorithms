@@ -1,8 +1,64 @@
+#performance evaluation
+
+#create lists for relevant model metrics, this will be used to compare different models
+model = []
+model_mean = []
+model_std = []
+
 #train/test/split
 from sklearn.model_selection import train_test_split 
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.25,random_state=1) 
 
+#k-fold cross validation
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+X = X
+y = y
+
+#folds, adjust based on # of data points
+folds = 5
+kfold = KFold(n_splits = folds, random_state = 1, shuffle=True)
+
+
 #classification algorithms
+
+#logistic regression
+from sklearn.linear_model import  LogisticRegression 
+method = LogisticRegression() 
+results = cross_val_score(method, X, y, cv=kfold)
+
+#adding to end of list of model metrics
+model.append(method)
+model_mean.append(round(results.mean(), 4))
+model_std.append(round(results.std(), 4))
+
+#decision tree classifier
+from sklearn.tree import DecisionTreeClassifier
+method = DecisionTreeClassifier() 
+results = cross_val_score(method, X, y, cv=kfold)
+model_mean.append(round(results.mean(), 4))
+model_std.append(round(results.std(), 4))
+
+
+#random forest classifier
+from sklearn.ensemble import RandomForestClassifier
+method = RandomForestClassifier() 
+results = cross_val_score(method, X, y, cv=kfold)
+model_mean.append(round(results.mean(), 4))
+model_std.append(round(results.std(), 4))
+
+#gradient boosting classifier
+from sklearn.ensemble import GradientBoostingClassifier
+method = GradientBoostingClassifier() 
+results = cross_val_score(method, X, y, cv=kfold)
+model_mean.append(round(results.mean(), 4))
+model_std.append(round(results.std(), 4))
+
+#XG Boost Classifier
+method = XGBClassifier() 
+results = cross_val_score(method, X, y, cv=kfold)
+model_mean.append(round(results.mean(), 4))
+model_std.append(round(results.std(), 4))
 
 #logistic regression
 from sklearn.linear_model import  LogisticRegression 
@@ -10,42 +66,6 @@ logreg = LogisticRegression()
 logreg.fit(X, y) 
 logreg.predict(X)
 logreg.score(X, y)
-
-#decision tree classifier
-from sklearn.tree import DecisionTreeClassifier
-dtc = DecisionTreeClassifier(random_state = 1)
-dtc.fit(X_train, y_train)
-dtc_train_score = dtc.score(X_train, y_train)
-dtc_test_score = dtc.score(X_test, y_test)
-print(dtc_train_score)
-print(dtc_test_score)
-
-#random forest classifier
-from sklearn.ensemble import RandomForestClassifier
-rfc = RandomForestClassifier(random_state = 1)
-rfc.fit(X_train, y_train)
-rfc_train_score = rfc.score(X_train, y_train)
-rfc_test_score = rfc.score(X_test, y_test)
-print(rfc_train_score)
-print(rfc_test_score)
-
-#gradient boosting classifier
-from sklearn.ensemble import GradientBoostingClassifier
-gb = GradientBoostingClassifier()
-gb.fit(X_train, y_train)
-gb_train_score = gb.score(X_train, y_train)
-gb_test_score = gb.score(X_test, y_test)
-print(gb_train_score)
-print(gb_test_score)
-
-#XG Boost Classifier
-from xgboost import XGBClassifier
-xgb = XGBClassifier()
-xgb.fit(X_train, y_train)
-xgb_train_score = xgb.score(X_train, y_train)
-xgb_test_score = xgb.score(X_test, y_test)
-print(xgb_train_score)
-print(xgb_test_score)
 
 #Regression
 
@@ -62,3 +82,13 @@ RFR = RandomForestRegressor(random_state = 1)
 RFR.fit(X, y)
 RFR.predict(X)
 score(X, y)
+
+models = pd.DataFrame({
+    'Model' : model,
+    'Score' : model_mean,
+    'std' : model_std
+})
+
+
+models.sort_values(by = 'Score', ascending = False)
+

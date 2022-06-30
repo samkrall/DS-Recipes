@@ -12,3 +12,8 @@ rescaledX = scaler.transform(X)
 from sklearn.preprocessing import Normalizer
 scaler = Normalizer().fit(X)
 normalizedX = scaler.transform(X)
+
+#log transform
+for col in ['A', 'B', 'C']:
+    df[col]=np.log(1+df[col])
+

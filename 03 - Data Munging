@@ -8,6 +8,7 @@ df_train.drop('Cabin',axis=1,inplace=True)
 
 #fill null value with composite value 
 df_train["column"].fillna(df_train['column'].median(),inplace=True)  (or mean or mode or …) 
+df_train["column"].fillna(df_train['column'].mode()[1],inplace=True)
 
 #Recoding Values: 
 

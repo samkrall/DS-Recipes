@@ -69,3 +69,23 @@ for learning_rate in [0.1, 0.5, 1, 10, 100]:
 print(best_score)
 print(best_std)
 print(best_parameters)
+
+from xgboost import XGBClassifier
+best_score = 0
+
+
+for learning_rate in [0.1, 0.5, 1, 10]:
+    for n_estimators in [25, 50, 100, 500]:
+        for max_depth in [2, 3, 4, 5, 6]:
+            xgb = XGBClassifier(random_state=1, learning_rate=learning_rate, n_estimators=n_estimators, max_depth=max_depth)
+            scores = cross_val_score(xgb, X, y, cv = 5)
+            score = np.mean(scores)
+            if score > best_score:
+                best_score = score
+                best_std = np.std(scores)
+                best_parameters = {'learning rate':learning_rate, 'n estimators':n_estimators, 'max leaf nodes': max_leaf_nodes}
+                
+                
+print(best_score)
+print(best_std)
+print(best_parameters)

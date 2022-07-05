@@ -83,7 +83,7 @@ for learning_rate in [0.1, 0.5, 1, 10]:
             if score > best_score:
                 best_score = score
                 best_std = np.std(scores)
-                best_parameters = {'learning rate':learning_rate, 'n estimators':n_estimators, 'max leaf nodes': max_leaf_nodes}
+                best_parameters = {'learning rate':learning_rate, 'n estimators':n_estimators, 'max leaf nodes': max_depth}
                 
                 
 print(best_score)

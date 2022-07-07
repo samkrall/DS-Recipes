@@ -3,7 +3,7 @@ df_copy = df.copy(deep = True)
 df_copy[['column1', 'column2', 'column_n']] = df_copy[['column1', 'column2', 'column_n']].replace(0, np.NaN)
 df_copy.isnull().sum()
 
-##drop irrelevant column
+#drop irrelevant column
 #by name
 df_train.drop('Column',axis=1,inplace=True) 
 #by datatype
@@ -13,8 +13,15 @@ df_drop = df.select_dtypes(exclude=['object'])
 df_train["column"].fillna(df_train['column'].median(),inplace=True)  (or mean or mode or …) 
 df_train["column"].fillna(df_train['column'].mode()[1],inplace=True)
 
-#Recoding Values: 
+#create list of categoricals
+object_cols = df_train.select_dtypes(['object'])
 
+#find unique categoricals
+object_nunique = list(map(lambda col: X_train[col].nunique(), object_cols))
+d = dict(zip(object_cols, object_nunique))
+sorted(d.items(), key=lambda x: x[1])
+
+#Recoding Values: 
 #using.codes
 df['column'] = pd.Categorical(df['column']).codes
 

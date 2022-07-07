@@ -3,8 +3,11 @@ df_copy = df.copy(deep = True)
 df_copy[['column1', 'column2', 'column_n']] = df_copy[['column1', 'column2', 'column_n']].replace(0, np.NaN)
 df_copy.isnull().sum()
 
-#drop irrelevant column 
-df_train.drop('Cabin',axis=1,inplace=True) 
+##drop irrelevant column
+#by name
+df_train.drop('Column',axis=1,inplace=True) 
+#by datatype
+df_drop = df.select_dtypes(exclude=['object'])
 
 #fill null value with composite value 
 df_train["column"].fillna(df_train['column'].median(),inplace=True)  (or mean or mode or …) 
@@ -26,8 +29,22 @@ df['Sex'].replace(['male','female'],[0,1],inplace=True)
 #Using lambda 
 df['column'] = df['column'].apply(lambda x: 1 if x == 'attribut1' else 0)
 
+#using another columns values to fill in categorical nan's
+df_train.loc[(df_train['Column1'].isna()) & (df_train['Column2'].isin(['A', 'B', 'C', 'D'])), 'Column1'] = 'Value'
+
 #get dummies (logistic regression)
 pd.get_dummies(df['column'], drop_first=True)
 
-#using another columns values to fill in categorical nan's
-df_train.loc[(df_train['Column1'].isna()) & (df_train['Column2'].isin(['A', 'B', 'C', 'D'])), 'Column1'] = 'Value'
+#one-hot encoding
+from sklearn.preprocessing import OneHotEncoder
+one_hot_encoder = OneHotEncoder(handle_unknown='ignore, sparse=False)
+oh_df_train = pd.DataFrame(one_hot_encoder.fit_transform(df_train['column1', 'column2']))
+numerical_df_train = df_train.drop(object_cols, axis=1)
+new_df = pd.concat([numerical_df_train, oh_df_train], axis=1)
+
+#ordinal encoding
+from sklearn.preprocessing import OrdinalEncoder
+ordinal_encoder = OrdinalEncoder()
+oe_df_train = ordinal_encoder.fit_transform(df_train['column1', 'column2'])
+
+

@@ -22,6 +22,25 @@ kfold = KFold(n_splits = folds, random_state = 1, shuffle=True)
 
 #classification algorithms
 
+#knn
+from sklearn.neighbors import KNeighborsClassifier
+method = KNeighborsClassifier()
+results = cross_val_score(method, rescaledX, y, cv=kfold)
+
+#adding to end of list of model metrics
+model.append(method)
+model_mean.append(round(results.mean(), 4))
+model_std.append(round(results.std(), 4))
+
+from sklearn.svm import LinearSVC
+method = LinearSVC()
+results = cross_val_score(method, rescaledX, y, cv=kfold)
+
+#adding to end of list of model metrics
+model.append(method)
+model_mean.append(round(results.mean(), 4))
+model_std.append(round(results.std(), 4))
+
 #logistic regression
 from sklearn.linear_model import  LogisticRegression 
 method = LogisticRegression() 

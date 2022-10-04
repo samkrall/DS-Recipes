@@ -39,6 +39,15 @@ df['column'] = df['column'].apply(lambda x: 1 if x == 'attribut1' else 0)
 #using another columns values to fill in categorical nan's
 df_train.loc[(df_train['Column1'].isna()) & (df_train['Column2'].isin(['A', 'B', 'C', 'D'])), 'Column1'] = 'Value'
 
+#creating a dictionary from the mode of a related column then mapping dictionary values into nan values
+dicts = {}
+for i in df['column1'].unique():
+  filt = (df['column1']==i)
+  dicts[i] = df[filt]['column2'].mode()[0]
+print(dicts)
+
+df['column2'] = df['column2'].fillna(df['column1'].map(dicts))
+
 #get dummies (logistic regression)
 pd.get_dummies(df['column'], drop_first=True)
 

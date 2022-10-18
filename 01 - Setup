@@ -20,3 +20,8 @@ print(data.shape)
 df = read_csv('filename')
 
 #load using SQL
+
+
+#small datasets contained in seaborn
+print(sns.get_dataset_names())
+df = sns.load_dataset('name')

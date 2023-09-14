@@ -9,7 +9,9 @@ df.tail()
 
 
 #get total rows/columns
-df.shape
+def get_dataframe_shape(df):
+    rows, cols = df.shape
+    print(f"The DataFrame has {rows} rows and {cols} columns.")
 
 
 #show columns, count and datatype
@@ -21,24 +23,110 @@ df.columns
 
 
 #show columns/datatypes
-df.dtypes
+def get_column_types(df):
+    types = df.dtypes
+    print("Data Types for Each Column:")
+    print(types)
 
+#primary key
+def identify_primary_key(df):
+    for col in df.columns:
+        if df[col].is_unique:
+            print(f"The primary key for the DataFrame is: {col}")
+            return col
+    print("No primary key found.")
+    return None
 
 #show descriptive statistics (count, mean, std, min, 25/50/75, max) for all columns that are floats/ints
-df.describe()
+def numerical_summary(df):
+    summary = df.describe()
+    print("Summary Statistics for Numerical Columns:")
+    print(summary)
 
 
-#gives count of null values for all columns
-df.isnull().sum()
+#gives count/location of null values for all columns
+def locate_missing_data(df):
+    missing_data_count = df.isnull().sum()
+    print("Number of Missing Data Points Per Column:")
+    print(missing_data_count[missing_data_count > 0])
+    print(missing_data_count)
+
+    print("\nLocation of Missing Data Points (row, column):")
+    for col in df.columns:
+        missing_rows = df[df[col].isnull()].index.tolist()
+        if missing_rows:
+            print(f"Missing data in column {col} is found at rows: {missing_rows}")
 
 
 #for categoricals, gives # of each value present in specified column
-df['column'].value_counts()
+def categorical_frequencies(df):
+    categorical_cols = df.select_dtypes(include=['object']).columns
+    for col in categorical_cols:
+        print(f"Frequencies for column: {col}")
+        print(df[col].value_counts())
 
 
-#for categoricals, gives # of each value present in specified column
-df.groupby('column').size()
+#count by group
+def count_by_group(df, group_col, target_cols):
+    grouped_count = df.groupby(group_col)[target_cols].count()
+    print(f"Count by {group_col}:")
+    print(grouped_count)
 
+#automated outlier detection
+def identify_iqr_outliers(df, column):
+    Q1 = df[column].quantile(0.25)
+    Q3 = df[column].quantile(0.75)
+    IQR = Q3 - Q1
+    outliers = df[(df[column] < (Q1 - 1.5 * IQR)) | (df[column] > (Q3 + 1.5 * IQR))]
+    print(f"IQR Outliers in {column} are at rows: {outliers.index.tolist()}")
+
+#normality detection
+from scipy.stats import shapiro
+
+def shapiro_test(df, column):
+    stat, p = shapiro(df[column].dropna())
+    if p > 0.05:
+        print(f"{column} appears to be normally distributed.")
+    else:
+        print(f"{column} does not appear to be normally distributed.")
+
+#zscore test
+from scipy.stats import zscore
+
+def zscore_outliers(df, column):
+    df['zscore'] = zscore(df[column])
+    outliers = df[(df['zscore'] > 3) | (df['zscore'] < -3)]
+    print(f"Z-score Outliers in {column} are at rows: {outliers.index.tolist()}")
+
+#scatter plot outliers
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+def linear_regression_outliers(df, x_column, y_column):
+    # Fitting the linear regression model
+    X = df[[x_column]]
+    y = df[y_column]
+    
+    model = LinearRegression()
+    model.fit(X, y)
+    predictions = model.predict(X)
+    
+    # Calculating residuals
+    residuals = y - predictions
+    
+    # Calculating the standard deviation of residuals
+    std_residuals = residuals / np.std(residuals)
+    
+    # Identifying rows where the residual is greater than 2 standard deviations
+    outliers = df[np.abs(std_residuals) > 2]
+    
+    if len(outliers) > 0:
+        print(f"Linear Regression Outliers in {y_column} based on {x_column} are at rows: {outliers.index.tolist()}")
+    else:
+        print(f"No outliers detected in {y_column} based on {x_column}.")
+
+# Usage:
+linear_regression_outliers(df, 'x_column', 'y_column')
 
 #shows correlations between columns
 df.corr(method='pearson')
